@@ -41,4 +41,31 @@ WHERE Loans.DueDate = "2020-07-13" AND Loans.ReturnedDate IS NULL;
 
 #5
 **Update Loans table to add a returned date for books that have been turned in**
+**Book 1**
+UPDATE Loans
+SET ReturnedDate = "2020-07-05"
+WHERE BookID=(SELECT BookID From Books WHERE Barcode="6435968624" AND ReturnedDate IS NULL)
 
+**Book 2**
+UPDATE Loans
+SET ReturnedDate = "2020-07-05"
+WHERE BookID=(SELECT BookID From Books WHERE Barcode="5677520613" AND ReturnedDate IS NULL)
+
+**Book 3**
+UPDATE Loans
+SET ReturnedDate = "2020-07-05"
+WHERE BookID=(SELECT BookID From Books WHERE Barcode="8730298424" AND ReturnedDate IS NULL)
+
+
+#6
+**Generate a report showing the 10 patrons who have checked out the fewest books**
+SELECT COUNT(Loans.LoanID) AS no_of_loans, Patrons.FirstName, Patrons.Email
+FROM Loans
+JOIN Patrons ON Loans.PatronID = Patrons.PatronID
+GROUP BY Patrons.PatronID
+ORDER BY no_of_loans ASC
+LIMIT 10;
+
+
+#7
+**Generate a report showing books published in the 1890s that are available to be checked out**
