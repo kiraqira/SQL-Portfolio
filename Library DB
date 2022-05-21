@@ -69,3 +69,26 @@ LIMIT 10;
 
 #7
 **Generate a report showing books published in the 1890s that are available to be checked out**
+SELECT Books.Title, Books.Author, Books.Published
+FROM Books
+JOIN Loans ON Books.BookID = Loans.BookID
+WHERE (Books.Published BETWEEN "1890" AND "1899") AND Loans.ReturnedDate IS NOT NULL
+GROUP BY Books.BookID
+ORDER BY Books.Title;
+
+
+#8
+**Create 2 reports about book statistics**
+**Create a report showing how many books in the library were published each year, sorted most to least**
+SELECT Published, COUNT(DISTINCT(Title)) AS pub_count 
+FROM Books
+GROUP BY Published
+ORDER BY pub_count DESC;
+
+**Create a report showing the 5 most popular books patrons have checked out**
+SELECT COUNT(Loans.LoanID) AS loan_count, Books.Title
+FROM Loans
+JOIN Books ON Loans.BookID = Books.BookID
+GROUP BY Books.Title
+ORDER BY loan_count DESC
+LIMIT 5;
